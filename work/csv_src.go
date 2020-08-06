@@ -16,12 +16,22 @@ func (cs *CsvSrc) Do() error {
 		return err
 	}
 	defer f.Close()
-	lines, err := csv.NewReader(f).ReadAll()
+	csvReader := csv.NewReader(f)
+	lines, err := csvReader.ReadAll()
 	if err != nil {
 		return err
 	}
-	for _, l := range lines {
-		cs.ch <- l
+	headers := lines[0]
+	hmap := make(map[int]string, len(headers))
+	for i, h := range headers {
+		hmap[i] = h
+	}
+	for _, l := range lines[1:] {
+		valmap := make(map[string]string, len(headers))
+		for i, v := range l {
+			valmap[hmap[i]] = v
+		}
+		cs.ch <- valmap
 	}
 	return nil
 }
