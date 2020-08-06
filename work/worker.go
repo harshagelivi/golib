@@ -3,26 +3,26 @@ package work
 import "fmt"
 
 type Worker struct {
-	dataChannel chan<- interface{}
-	dstSink     Sink
-	numWorkers  int
-	buffSize    int
+	DataChannel chan<- interface{}
+	DstSink     Sink
+	NumWorkers  int
+	BuffSize    int
 }
 
 func (w *Worker) Run() {
-	for i := 0; i < w.numWorkers; i++ {
+	for i := 0; i < w.NumWorkers; i++ {
 		go w.sessionRun()
 	}
 }
 
 func (w *Worker) sessionRun() {
-	sessionData := make([]interface{}, w.buffSize)
+	sessionData := make([]interface{}, w.BuffSize)
 	sessionIdx := 0
-	for datum := range w.dataChannel {
+	for datum := range w.DataChannel {
 		sessionData[sessionIdx] = datum
 		sessionIdx++
-		if sessionIdx == w.buffSize {
-			e := w.dstSink(sessionData)
+		if sessionIdx == w.BuffSize {
+			e := w.DstSink(sessionData)
 			sessionIdx = 0
 			if e != nil {
 				// todo add more handling/exponential retry
