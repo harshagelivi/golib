@@ -1,9 +1,12 @@
 package work
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Worker struct {
-	DataChannel chan<- interface{}
+	DataChannel <-chan interface{}
 	DstSink     Sink
 	NumWorkers  int
 	BuffSize    int
@@ -18,6 +21,7 @@ func (w *Worker) Run() {
 func (w *Worker) sessionRun() {
 	sessionData := make([]interface{}, w.BuffSize)
 	sessionIdx := 0
+	fmt.Printf("Starting at %v", time.Now())
 	for datum := range w.DataChannel {
 		sessionData[sessionIdx] = datum
 		sessionIdx++
@@ -30,4 +34,5 @@ func (w *Worker) sessionRun() {
 			}
 		}
 	}
+	fmt.Printf("Ending at %v", time.Now())
 }

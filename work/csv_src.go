@@ -33,5 +33,6 @@ func (cs *CsvSrc) Do() error {
 		}
 		cs.Ch <- valmap
 	}
+	close(cs.Ch)
 	return nil
 }
