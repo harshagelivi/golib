@@ -22,9 +22,11 @@ func (w *Worker) sessionRun() {
 	sessionData := make([]interface{}, w.BuffSize)
 	sessionIdx := 0
 	start := time.Now()
+	numRecs := 0
 	for datum := range w.DataChannel {
 		sessionData[sessionIdx] = datum
 		sessionIdx++
+		numRecs++
 		if sessionIdx == w.BuffSize {
 			e := w.DstSink(sessionData)
 			sessionIdx = 0
@@ -34,5 +36,5 @@ func (w *Worker) sessionRun() {
 			}
 		}
 	}
-	fmt.Printf("Ending in %v", time.Since(start))
+	fmt.Printf("Handled %d in %v", numRecs, time.Since(start))
 }
