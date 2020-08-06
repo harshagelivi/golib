@@ -29,7 +29,9 @@ func (cs *CsvSrc) Do() error {
 	for _, l := range lines[1:] {
 		valmap := make(map[string]string, len(headers))
 		for i, v := range l {
-			valmap[hmap[i]] = v
+			if v != "" {
+				valmap[hmap[i]] = v
+			}
 		}
 		cs.Ch <- valmap
 	}

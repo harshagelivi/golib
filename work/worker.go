@@ -36,5 +36,5 @@ func (w *Worker) sessionRun() {
 			}
 		}
 	}
-	fmt.Printf("Handled %d in %v", numRecs, time.Since(start))
+	fmt.Printf("Handled %d in %v\n", numRecs, time.Since(start))
 }
