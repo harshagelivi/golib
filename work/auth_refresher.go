@@ -6,7 +6,7 @@ import (
 )
 
 type AuthRefresher struct {
-	Token      atomic.Value
+	Token      *atomic.Value
 	Refresher  func() string
 	AuthHeader string
 }

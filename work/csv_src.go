@@ -6,12 +6,12 @@ import (
 )
 
 type CsvSrc struct {
-	fileName string
-	ch chan<- interface{}
+	FileName string
+	Ch chan<- interface{}
 }
 
 func (cs *CsvSrc) Do() error {
-	f, err := os.Open(cs.fileName)
+	f, err := os.Open(cs.FileName)
 	if err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ func (cs *CsvSrc) Do() error {
 		for i, v := range l {
 			valmap[hmap[i]] = v
 		}
-		cs.ch <- valmap
+		cs.Ch <- valmap
 	}
 	return nil
 }
