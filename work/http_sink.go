@@ -9,7 +9,7 @@ import (
 type HttpSink struct {
 	Url    string
 	Method string
-	Auth   AuthRefresher
+	Auth   *AuthRefresher
 	//ClientPool    ClientPool
 	Client    *http.Client
 	BodyMaker func([]interface{}) io.Reader

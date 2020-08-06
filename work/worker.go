@@ -21,7 +21,7 @@ func (w *Worker) Run() {
 func (w *Worker) sessionRun() {
 	sessionData := make([]interface{}, w.BuffSize)
 	sessionIdx := 0
-	fmt.Printf("Starting at %v", time.Now())
+	start := time.Now()
 	for datum := range w.DataChannel {
 		sessionData[sessionIdx] = datum
 		sessionIdx++
@@ -34,5 +34,5 @@ func (w *Worker) sessionRun() {
 			}
 		}
 	}
-	fmt.Printf("Ending at %v", time.Now())
+	fmt.Printf("Ending in %v", time.Since(start))
 }
