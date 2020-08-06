@@ -22,8 +22,11 @@ func (w *Worker) sessionRun() {
 	sessionData := make([]interface{}, w.BuffSize)
 	sessionIdx := 0
 	start := time.Now()
+	minuteStart := time.Now()
 	numRecs := 0
-	for datum := range w.DataChannel {
+	totalRecs := 0
+	select {
+	case datum := <-w.DataChannel:
 		sessionData[sessionIdx] = datum
 		sessionIdx++
 		numRecs++
@@ -35,6 +38,12 @@ func (w *Worker) sessionRun() {
 				fmt.Println(e)
 			}
 		}
+		case <-time.Tick(time.Second * 60):
+			fmt.Printf("Handled %d in %v slot\n", numRecs, time.Since(minuteStart))
+			minuteStart = time.Now()
+			numRecs = 0
+			totalRecs += numRecs
+
 	}
-	fmt.Printf("Handled %d in %v\n", numRecs, time.Since(start))
+	fmt.Printf("Handled %d in %v\n", totalRecs, time.Since(start))
 }
