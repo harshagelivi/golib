@@ -7,7 +7,8 @@ import (
 )
 
 type HttpSink struct {
-	url string
+	Url           string
+	AuthRefresher AuthRefresher
 }
 
 func (hs *HttpSink) Do(p []interface{}) error {
@@ -15,6 +16,6 @@ func (hs *HttpSink) Do(p []interface{}) error {
 	if err != nil {
 		return err
 	}
-	_, err = http.Post(hs.url, "application/json", bytes.NewReader(byts))
+	_, err = http.Post(hs.Url, "application/json", bytes.NewReader(byts))
 	return err
 }
